@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Landing Page</title>
+
+
+  <script
+    src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.8.11/dist/dotlottie-wc.js"
+    type="module">
+  </script>
+
+ 
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: #f1e5d9;
+    }
+
+    .landing {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 28px; 
+    }
+
+    .logo {
+      width: 160px;
+      height: auto;
+    }
+
+    .lottie {
+      width: 300px;
+      height: 300px;
+    }
+
+    .btn {
+      padding: 16px 60px;
+      background: #A83B20;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 16px;
+      color: white;
+      font-weight: 500;
+      letter-spacing: 1px;
+    }
+
+    .btn:hover {
+      background: #8F3118;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="landing">
+
+   
+    <img src="resources/logo.png" alt="Logo" class="logo" />
+
+  
+    <dotlottie-wc
+      src="https://lottie.host/001eeec8-8682-42e1-a534-e48525c0d186/2J58fd6uQI.lottie"
+      class="lottie"
+      autoplay
+      loop>
+    </dotlottie-wc>
+
+   
+    <button class="btn" id="getStarted">GET STARTED</button>
+
+  </main>
+
+
+  <script>
+    document.getElementById("getStarted").addEventListener("click", () => {
+      // Redirect to signup page
+      window.location.href = "signup.html";
+    });
+  </script>
+
+</body>
+</html>
