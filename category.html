@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categories - SISBURMA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ffffff;
+            padding: 20px;
+        }
+
+        /* Back Button */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            margin-bottom: 30px;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            font-size: 18px;
+            color: #333;
+            transition: transform 0.2s;
+        }
+
+        .back-button:hover {
+            transform: translateX(-5px);
+        }
+
+        .back-arrow {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Category Grid */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        .category-card {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .category-image {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 15px;
+            background-color: #f0f0f0;
+        }
+
+        /* Love Icon */
+        .love-icon {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            transition: transform 0.2s;
+            z-index: 10;
+        }
+
+        .love-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .love-icon svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .love-icon.loved svg {
+            fill: #e74c3c;
+            stroke: #e74c3c;
+        }
+
+        .category-name {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            letter-spacing: 1px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .category-grid {
+                gap: 30px;
+            }
+
+            .category-image {
+                height: 280px;
+            }
+
+            .category-name {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .category-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+            .category-image {
+                height: 320px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Back Button -->
+        <button class="back-button" onclick="location.href='index.html'">
+            <svg class="back-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            <span>Back</span>
+        </button>
+
+        <!-- Category Grid -->
+        <div class="category-grid">
+            <div class="category-card" onclick="goToProduct(event, 'product.html')">
+                <div class="love-icon" onclick="toggleFavorite(event, 'cropped-tee')" id="fav-cropped-tee">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                    </svg>
+                </div>
+                <img src="resources/tee1.png" alt="Cropped Airlayer Tee" class="category-image">
+                <div class="category-name">Cropped Airlayer Tee</div>
+            </div>
+
+            <div class="category-card" onclick="goToProduct(event, 'product.html')">
+                <div class="love-icon" onclick="toggleFavorite(event, 'striped-hoodie')" id="fav-striped-hoodie">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                    </svg>
+                </div>
+                <img src="resources/outwear.png" alt="Outerwear" class="category-image">
+                <div class="category-name">Striped Hoodie</div>
+            </div>
+
+            <div class="category-card" onclick="goToProduct(event, 'product.html')">
+                <div class="love-icon" onclick="toggleFavorite(event, 'cotton-tee')" id="fav-cotton-tee">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                    </svg>
+                </div>
+                <img src="resources/tee2.png" alt="Cotton Tee" class="category-image">
+                <div class="category-name">Cotton Tee</div>
+            </div>
+
+            <div class="category-card" onclick="goToProduct(event, 'product.html')">
+                <div class="love-icon" onclick="toggleFavorite(event, 'collar-tee')" id="fav-collar-tee">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                    </svg>
+                </div>
+                <img src="resources/tshirt.png" alt="Collar tee" class="category-image">
+                <div class="category-name">Collar Tee</div>
+            </div>
+
+            <div class="category-card" onclick="goToProduct(event, 'product.html')">
+                <div class="love-icon" onclick="toggleFavorite(event, 'loose-fit-tee')" id="fav-loose-fit-tee">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                    </svg>
+                </div>
+                <img src="resources/tee3.png" alt="Loose fit Tee" class="category-image">
+                <div class="category-name">Loose Fit Tee</div>
+            </div>
+
+            <div class="category-card" onclick="goToProduct(event, 'product.html')">
+                <div class="love-icon" onclick="toggleFavorite(event, 'new-giraffe-tee')" id="fav-new-giraffe-tee">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                    </svg>
+                </div>
+                <img src="resources/tee4.png" alt="New Giraffe Tee" class="category-image">
+                <div class="category-name">New Giraffe Tee</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Product data
+        const products = {
+            'cropped-tee': {
+                name: 'Cropped Airlayer Tee',
+                description: 'Comfortable cropped tee with airlayer fabric for breathability',
+                image: 'resources/tee1.png',
+                sizes: ['S', 'M', 'L', 'XL'],
+                colors: ['Beige', 'Navy', 'Black']
+            },
+            'striped-hoodie': {
+                name: 'Striped Hoodie',
+                description: 'Casual striped hoodie perfect for layering',
+                image: 'resources/outwear.png',
+                sizes: ['S', 'M', 'L', 'XL'],
+                colors: ['Grey', 'Navy', 'Black']
+            },
+            'cotton-tee': {
+                name: 'Cotton Tee',
+                description: 'Classic cotton t-shirt with premium quality fabric',
+                image: 'resources/tee2.png',
+                sizes: ['S', 'M', 'L', 'XL'],
+                colors: ['White', 'Black', 'Navy', 'Beige']
+            },
+            'collar-tee': {
+                name: 'Collar Tee',
+                description: 'Stylish collar tee for a smart casual look',
+                image: 'resources/tshirt.png',
+                sizes: ['S', 'M', 'L', 'XL'],
+                colors: ['White', 'Blue', 'Black']
+            },
+            'loose-fit-tee': {
+                name: 'Loose Fit Tee',
+                description: 'Relaxed fit tee for maximum comfort and style',
+                image: 'resources/tee3.png',
+                sizes: ['S', 'M', 'L', 'XL'],
+                colors: ['Beige', 'Grey', 'Black', 'White']
+            },
+            'new-giraffe-tee': {
+                name: 'New Giraffe Tee',
+                description: 'First collaboration product of Sisburma x Burmesehype. Premium cutting with 100% cotton.',
+                image: 'resources/tee4.png',
+                sizes: ['S', 'M', 'L', 'XL'],
+                colors: ['Beige', 'Navy', 'Black', 'Burgundy']
+            }
+        };
+
+        // Load favorites on page load
+        function loadFavorites() {
+            const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+            favorites.forEach(id => {
+                const icon = document.getElementById('fav-' + id);
+                if (icon) {
+                    icon.classList.add('loved');
+                }
+            });
+        }
+
+        // Toggle favorite
+        function toggleFavorite(event, productId) {
+            event.stopPropagation();
+            
+            const icon = document.getElementById('fav-' + productId);
+            const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+            const product = products[productId];
+            
+            if (favorites.includes(productId)) {
+                // Remove from favorites
+                const index = favorites.indexOf(productId);
+                favorites.splice(index, 1);
+                icon.classList.remove('loved');
+            } else {
+                // Add to favorites
+                favorites.push(productId);
+                icon.classList.add('loved');
+                
+                // Store product details
+                const favoriteProducts = JSON.parse(localStorage.getItem('favoriteProducts') || '{}');
+                favoriteProducts[productId] = product;
+                localStorage.setItem('favoriteProducts', JSON.stringify(favoriteProducts));
+            }
+            
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+        }
+
+        // Navigate to product
+        function goToProduct(event, url) {
+            location.href = url;
+        }
+
+        // Initialize
+        loadFavorites();
+    </script>
+</body>
+</html>

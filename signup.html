@@ -246,7 +246,7 @@
         // Create user with Firebase Authentication
         auth.createUserWithEmailAndPassword(email, password)
             .then((userCredential) => {
-                // User created successfully
+                
                 const user = userCredential.user;
                 console.log('User created:', user.uid);
                 
@@ -264,7 +264,7 @@
                 const errorCode = error.code;
                 const errorMessage = error.message;
                 
-                // Handle specific errors
+                
                 if (errorCode === 'auth/email-already-in-use') {
                     alert('This email is already registered. Please log in.');
                 } else if (errorCode === 'auth/weak-password') {

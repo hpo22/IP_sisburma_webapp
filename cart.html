@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - SISBURMA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f1e5d9;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        /* Back Button */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            margin: 20px 20px 20px 30px;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            font-size: 18px;
+            color: #333;
+            transition: transform 0.2s;
+        }
+
+        .back-button:hover {
+            transform: translateX(-5px);
+        }
+
+        .back-arrow {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px 40px 40px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .empty-state svg {
+            width: 80px;
+            height: 80px;
+            stroke: #999;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h2 {
+            font-size: 24px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            font-size: 16px;
+            color: #999;
+            margin-bottom: 30px;
+        }
+
+        .browse-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #2c3e50;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .browse-btn:hover {
+            background: #1a2634;
+        }
+
+        /* Cart Content */
+        .cart-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* Cart Items */
+        .cart-items {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 20px;
+            padding: 20px 0;
+            border-bottom: 1px solid #eee;
+            position: relative;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 12px;
+            background-color: #d4c4b0;
+            flex-shrink: 0;
+        }
+
+        .item-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .item-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .item-info {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .item-info span {
+            margin-right: 15px;
+        }
+
+        .item-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-top: auto;
+        }
+
+        .remove-btn {
+            position: absolute;
+            top: 20px;
+            right: 0;
+            width: 32px;
+            height: 32px;
+            background: #fee;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .remove-btn:hover {
+            background: #fcc;
+            transform: scale(1.1);
+        }
+
+        .remove-btn svg {
+            width: 18px;
+            height: 18px;
+            stroke: #e74c3c;
+        }
+
+        /* Summary Section */
+        .cart-summary {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .summary-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 16px;
+            color: #666;
+        }
+
+        .summary-row.total {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+        }
+
+        .summary-row .label {
+            font-weight: 500;
+        }
+
+        .summary-row .value {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .summary-row.total .value {
+            color: #e74c3c;
+        }
+
+        /* Checkout Button */
+        .checkout-btn {
+            width: 100%;
+            padding: 18px;
+            background: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .checkout-btn:hover {
+            background: #1a2634;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(44, 62, 80, 0.3);
+        }
+
+        .checkout-btn:active {
+            transform: translateY(0);
+        }
+
+        .continue-shopping {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .continue-shopping:hover {
+            color: #2c3e50;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .page-title {
+                font-size: 26px;
+            }
+
+            .cart-item {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .item-image {
+                width: 100%;
+                height: 200px;
+            }
+
+            .remove-btn {
+                top: 10px;
+                right: 10px;
+            }
+
+            .cart-items {
+                padding: 15px;
+            }
+
+            .cart-summary {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="back-button" onclick="history.back()">
+        <svg class="back-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        <span>Back</span>
+    </button>
+
+    <div class="container">
+        <h1 class="page-title">Shopping Cart</h1>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="9" cy="21" r="1"></circle>
+                <circle cx="20" cy="21" r="1"></circle>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            <h2>Your cart is empty</h2>
+            <p>Add some items to get started</p>
+            <a href="category.html" class="browse-btn">Browse Products</a>
+        </div>
+
+        <!-- Cart Content -->
+        <div class="cart-content" id="cartContent" style="display: none;">
+            <!-- Cart Items -->
+            <div class="cart-items">
+                <div id="cartItemsList">
+                    <!-- Cart items will be dynamically loaded here -->
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="cart-summary">
+                <h2 class="summary-title">Order Summary</h2>
+                
+                <div class="summary-row">
+                    <span class="label">Subtotal:</span>
+                    <span class="value" id="subtotal">$0.00</span>
+                </div>
+                
+                <div class="summary-row">
+                    <span class="label">Shipping:</span>
+                    <span class="value" id="shipping">$5.00</span>
+                </div>
+                
+                <div class="summary-row">
+                    <span class="label">Tax (10%):</span>
+                    <span class="value" id="tax">$0.00</span>
+                </div>
+                
+                <div class="summary-row total">
+                    <span class="label">Total:</span>
+                    <span class="value" id="total">$0.00</span>
+                </div>
+
+                <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+                
+                <a href="category.html" class="continue-shopping">← Continue Shopping</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load and display cart items
+        function loadCart() {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const cartItemsList = document.getElementById('cartItemsList');
+            const emptyState = document.getElementById('emptyState');
+            const cartContent = document.getElementById('cartContent');
+
+            if (cart.length === 0) {
+                emptyState.style.display = 'block';
+                cartContent.style.display = 'none';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            cartContent.style.display = 'flex';
+            cartItemsList.innerHTML = '';
+
+            let subtotal = 0;
+
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+                cartItem.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" class="item-image">
+                    <div class="item-details">
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-info">
+                            <span><strong>Size:</strong> ${item.size}</span>
+                            <span><strong>Color:</strong> ${item.color}</span>
+                            <span><strong>Qty:</strong> ${item.quantity}</span>
+                        </div>
+                        <div class="item-price">$${itemTotal.toFixed(2)}</div>
+                    </div>
+                    <button class="remove-btn" onclick="removeItem(${index})">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M18 6L6 18M6 6l12 12"/>
+                        </svg>
+                    </button>
+                `;
+                cartItemsList.appendChild(cartItem);
+            });
+
+            // Calculate totals
+            const shipping = cart.length > 0 ? 5.00 : 0;
+            const tax = subtotal * 0.10;
+            const total = subtotal + shipping + tax;
+
+            // Update summary
+            document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('shipping').textContent = `$${shipping.toFixed(2)}`;
+            document.getElementById('tax').textContent = `$${tax.toFixed(2)}`;
+            document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+        }
+
+        // Remove item from cart
+        function removeItem(index) {
+            if (confirm('Remove this item from cart?')) {
+                let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+                cart.splice(index, 1);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                loadCart();
+            }
+        }
+
+        // Checkout
+        function checkout() {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+
+            const total = document.getElementById('total').textContent;
+            
+            if (confirm(`Complete your order?\n\nTotal Amount: ${total}\n\nThis is a demo - no actual payment will be processed.`)) {
+                // Clear cart
+                localStorage.removeItem('cart');
+                
+                // Show success message
+                alert('Order placed successfully! Thank you for shopping with SISBURMA.');
+                
+                // Redirect to home page
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Initialize
+        loadCart();
+    </script>
+</body>
+</html>

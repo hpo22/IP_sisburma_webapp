@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Favorites - SISBURMA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f1e5d9;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        /* Back Button */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            margin: 20px 20px 20px 30px;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            font-size: 18px;
+            color: #333;
+            transition: transform 0.2s;
+        }
+
+        .back-button:hover {
+            transform: translateX(-5px);
+        }
+
+        .back-arrow {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 40px 40px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-state svg {
+            width: 80px;
+            height: 80px;
+            stroke: #999;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h2 {
+            font-size: 24px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            font-size: 16px;
+            color: #999;
+            margin-bottom: 30px;
+        }
+
+        .browse-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #2c3e50;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .browse-btn:hover {
+            background: #1a2634;
+        }
+
+        /* Favorites Grid */
+        .favorites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        /* Favorite Item Card */
+        .favorite-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .favorite-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+
+        /* Image Container */
+        .card-image-container {
+            position: relative;
+            width: 100%;
+            height: 320px;
+            background-color: #d4c4b0;
+            overflow: hidden;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Remove Icon */
+        .remove-icon {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 36px;
+            height: 36px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            transition: transform 0.2s;
+            z-index: 10;
+        }
+
+        .remove-icon:hover {
+            transform: scale(1.1);
+            background: #fee;
+        }
+
+        .remove-icon svg {
+            width: 20px;
+            height: 20px;
+            stroke: #e74c3c;
+        }
+
+        /* Card Content */
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+        }
+
+        .card-description {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Size Info */
+        .info-section {
+            margin-bottom: 15px;
+        }
+
+        .info-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .size-list {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .size-badge {
+            padding: 5px 12px;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        /* Color Info */
+        .color-list {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .color-badge {
+            padding: 5px 12px;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            font-size: 13px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        /* View Button */
+        .view-btn {
+            width: 100%;
+            padding: 12px;
+            background: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        .view-btn:hover {
+            background: #1a2634;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .page-title {
+                font-size: 26px;
+            }
+
+            .favorites-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .card-image-container {
+                height: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="back-button" onclick="location.href='category.html'">
+        <svg class="back-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        <span>Back</span>
+    </button>
+
+    <div class="container">
+        <h1 class="page-title">My Favorites</h1>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+            <h2>No favorites yet</h2>
+            <p>Start adding items to your favorites to see them here</p>
+            <a href="category.html" class="browse-btn">Browse Products</a>
+        </div>
+
+        <!-- Favorites Grid -->
+        <div class="favorites-grid" id="favoritesGrid">
+            <!-- Favorite items will be dynamically loaded here -->
+        </div>
+    </div>
+
+    <script>
+        // Load and display favorites
+        function loadFavorites() {
+            const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+            const favoriteProducts = JSON.parse(localStorage.getItem('favoriteProducts') || '{}');
+            const favoritesGrid = document.getElementById('favoritesGrid');
+            const emptyState = document.getElementById('emptyState');
+
+            if (favorites.length === 0) {
+                emptyState.style.display = 'block';
+                favoritesGrid.style.display = 'none';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            favoritesGrid.style.display = 'grid';
+            favoritesGrid.innerHTML = '';
+
+            favorites.forEach(productId => {
+                const product = favoriteProducts[productId];
+                if (!product) return;
+
+                const card = document.createElement('div');
+                card.className = 'favorite-card';
+                card.innerHTML = `
+                    <div class="card-image-container">
+                        <img src="${product.image}" alt="${product.name}" class="card-image">
+                        <div class="remove-icon" onclick="removeFromFavorites('${productId}')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M18 6L6 18M6 6l12 12"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">${product.name}</h3>
+                        <p class="card-description">${product.description}</p>
+                        
+                        <div class="info-section">
+                            <div class="info-label">Available Sizes:</div>
+                            <div class="size-list">
+                                ${product.sizes.map(size => `<span class="size-badge">${size}</span>`).join('')}
+                            </div>
+                        </div>
+                        
+                        <div class="info-section">
+                            <div class="info-label">Available Colors:</div>
+                            <div class="color-list">
+                                ${product.colors.map(color => `<span class="color-badge">${color}</span>`).join('')}
+                            </div>
+                        </div>
+                        
+                        <button class="view-btn" onclick="viewProduct('${productId}')">View Product</button>
+                    </div>
+                `;
+                favoritesGrid.appendChild(card);
+            });
+        }
+
+        // Remove from favorites
+        function removeFromFavorites(productId) {
+            const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+            const index = favorites.indexOf(productId);
+            
+            if (index > -1) {
+                favorites.splice(index, 1);
+                localStorage.setItem('favorites', JSON.stringify(favorites));
+                
+                // Remove from favoriteProducts if no longer in favorites
+                if (!favorites.includes(productId)) {
+                    const favoriteProducts = JSON.parse(localStorage.getItem('favoriteProducts') || '{}');
+                    delete favoriteProducts[productId];
+                    localStorage.setItem('favoriteProducts', JSON.stringify(favoriteProducts));
+                }
+                
+                // Reload the page to update display
+                loadFavorites();
+            }
+        }
+
+        // View product (you can customize this to navigate to product detail page)
+        function viewProduct(productId) {
+            // Navigate to product detail page
+            // For now, just redirect to category page
+            location.href = 'product.html';
+        }
+
+        // Initialize
+        loadFavorites();
+    </script>
+</body>
+</html>

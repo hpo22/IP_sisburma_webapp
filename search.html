@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search - SISBURMA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ffffff;
+            padding: 20px;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Back Button */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            margin-bottom: 30px;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            font-size: 18px;
+            color: #333;
+            transition: transform 0.2s;
+        }
+
+        .back-button:hover {
+            transform: translateX(-5px);
+        }
+
+        .back-arrow {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Search Bar */
+        .search-section {
+            margin-bottom: 40px;
+        }
+
+        .search-bar {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #00000093;
+            padding: 15px 20px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            color: white;
+            outline: none;
+        }
+
+        .search-bar input::placeholder {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Results Section */
+        .results-section {
+            margin-top: 30px;
+        }
+
+        .results-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .no-results {
+            text-align: center;
+            color: #666;
+            font-size: 18px;
+            margin-top: 50px;
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        .product-card {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 15px;
+            background-color: #f0f0f0;
+        }
+
+        .product-name {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            letter-spacing: 1px;
+        }
+
+        /* Hidden class */
+        .hidden {
+            display: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .product-grid {
+                gap: 30px;
+            }
+
+            .product-image {
+                height: 280px;
+            }
+
+            .product-name {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+            .product-image {
+                height: 320px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Back Button -->
+        <button class="back-button" onclick="location.href='index.html'">
+            <svg class="back-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            <span>Back</span>
+        </button>
+
+        <!-- Search Bar -->
+        <div class="search-section">
+            <div class="search-bar">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <input type="text" id="searchInput" placeholder="Search for items..." autocomplete="off">
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-section">
+            <h2 class="results-title hidden" id="resultsTitle">Search Results</h2>
+            <div class="no-results hidden" id="noResults">No results found</div>
+            
+            <!-- Product Grid -->
+            <div class="product-grid" id="productGrid">
+                <!-- Products will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Product database
+        const products = [
+            // Tee items
+            { id: 1, name: 'Cotton Tee', category: 'tee', image: 'resources/tee1.png', keywords: ['tee', 't-shirt', 'cotton', 'basic'] },
+            { id: 2, name: 'Collar Tee', category: 'tee', image: 'resources/tee2.png', keywords: ['tee', 't-shirt', 'collar', 'formal'] },
+            { id: 3, name: 'Loose Fit Tee', category: 'tee', image: 'resources/tee3.png', keywords: ['tee', 't-shirt', 'loose', 'oversized'] },
+            { id: 4, name: 'New Giraffe Tee', category: 'tee', image: 'resources/tee4.png', keywords: ['tee', 't-shirt', 'giraffe', 'graphic'] },
+            // Other categories
+            { id: 5, name: 'SHIRT', category: 'shirt', image: 'resources/tshirt.png', keywords: ['shirt', 'button', 'formal'] },
+            { id: 6, name: 'OUTEWEAR', category: 'outerwear', image: 'resources/outwear.png', keywords: ['outerwear', 'jacket', 'coat'] },
+            { id: 7, name: 'PANT', category: 'pant', image: 'resources/pant.png', keywords: ['pant', 'pants', 'trouser', 'trousers'] },
+            { id: 8, name: 'UNDERWEAR', category: 'underwear', image: 'resources/underwear.png', keywords: ['underwear', 'brief', 'boxers'] },
+            { id: 9, name: 'SHOE', category: 'shoe', image: 'resources/shoe.png', keywords: ['shoe', 'shoes', 'footwear', 'sneaker'] }
+        ];
+
+        const searchInput = document.getElementById('searchInput');
+        const productGrid = document.getElementById('productGrid');
+        const resultsTitle = document.getElementById('resultsTitle');
+        const noResults = document.getElementById('noResults');
+
+        // Function to perform search
+        function performSearch(searchTerm) {
+            searchTerm = searchTerm.toLowerCase().trim();
+            
+            if (searchTerm === '') {
+                // Clear results
+                productGrid.innerHTML = '';
+                resultsTitle.classList.add('hidden');
+                noResults.classList.add('hidden');
+                return;
+            }
+
+            // Filter products
+            const filteredProducts = products.filter(product => {
+                return product.keywords.some(keyword => keyword.includes(searchTerm)) ||
+                       product.name.toLowerCase().includes(searchTerm);
+            });
+
+            // Display results
+            if (filteredProducts.length > 0) {
+                resultsTitle.classList.remove('hidden');
+                noResults.classList.add('hidden');
+                
+                productGrid.innerHTML = filteredProducts.map(product => `
+                    <div class="product-card" onclick="location.href='#${product.category}'">
+                        <img src="${product.image}" alt="${product.name}" class="product-image">
+                        <div class="product-name">${product.name}</div>
+                    </div>
+                `).join('');
+            } else {
+                resultsTitle.classList.add('hidden');
+                noResults.classList.remove('hidden');
+                productGrid.innerHTML = '';
+            }
+        }
+
+        // Search functionality
+        searchInput.addEventListener('input', function() {
+            performSearch(this.value);
+        });
+
+        // Check for URL parameter on page load
+        const urlParams = new URLSearchParams(window.location.search);
+        const queryParam = urlParams.get('q');
+        if (queryParam) {
+            searchInput.value = queryParam;
+            performSearch(queryParam);
+        }
+
+        // Auto-focus on search input
+        searchInput.focus();
+    </script>
+</body>
+</html>

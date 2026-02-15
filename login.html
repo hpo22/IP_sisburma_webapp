@@ -170,11 +170,11 @@
       appId: "1:1015382763685:web:d6f2d034d6488faefb054c"
     };
 
-    // Initialize once
+    
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
-    // Start with empty fields (avoid autofill from browser as much as possible)
+    
     window.addEventListener("load", () => {
       document.getElementById("email").value = "";
       document.getElementById("password").value = "";
@@ -219,16 +219,16 @@
       try {
         await auth.signInWithEmailAndPassword(email, password);
 
-        // Optional: remember email only (do NOT store password)
+        
         localStorage.setItem("userEmail", email);
 
         setMsg("Login successful! Redirecting...", "success");
 
-        // ✅ Change this to your next page
-        window.location.href = "home.html";
+        
+        window.location.href = "index.html";
 
       } catch (error) {
-        // Friendly errors
+        
         if (error.code === "auth/invalid-credential" || error.code === "auth/wrong-password") {
           setMsg("Wrong email or password.", "error");
         } else if (error.code === "auth/user-not-found") {
